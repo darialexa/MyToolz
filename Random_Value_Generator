@@ -1,0 +1,23 @@
+set cut_paste_input [stack 0]
+version 13.0 v5
+push $cut_paste_input
+Group {
+ name Group1
+ selected true
+ xpos -193
+ ypos -399
+ addUserKnob {20 User}
+ addUserKnob {7 value}
+ addUserKnob {22 toggle T "if nuke.thisNode().knob('value').value() == 0:\n\tnuke.thisNode().knob('value').setValue(1)\nelse:\n\tnuke.thisNode().knob('value').setValue(0)" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 0
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 300
+ }
+end_group
