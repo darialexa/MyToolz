@@ -9,7 +9,7 @@ import platform
 
 # Define where .nuke directory is on each OS's network
 Win_Dir = 'C:\Users\rtm\.nuke'
-MacOSX_Dir = ''
+MacOSX_Dir = '/Users/Daria/.nuke'
 Linux_Dir = '/home/dalexander/.nuke'
 
 # Set global directory
