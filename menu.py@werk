@@ -1,3 +1,21 @@
+import nuke
+import hotkeys
+import defaults
+
+hotkeys.add_hotkeys()
+defaults.register_defaults()
+
+import cryptomatte_utilities
+cryptomatte_utilities.setup_cryptomatte_ui()
+
+import AnimationMaker
+
+import RetimeCamera
+m = nuke.menu( 'Nodes' )
+m.addCommand('RC','RetimeCamera.create_RCPanel()')
+
+
+
 # ---------------------------------------------------
 # Daria's custom stuff here
 # Version: 1.0.1
@@ -23,3 +41,11 @@ nuke.knobDefault('Kronos.timing2', "Frame")
 
 # Set Blur to "2"
 nuke.knobDefault('Blur.size', "5")
+
+
+# ------------------ CUSTOM MENUS -------------------
+
+utilitiesMenu = nuke.menu('Nuke').addMenu('Darias')
+utilitiesMenu.addCommand('Autocrop', 'nukescripts.autocrop()')
+
+## -----END OF DARIAS STUFF THANKS FOR WATCHING------
