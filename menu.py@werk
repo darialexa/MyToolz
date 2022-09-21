@@ -1,0 +1,23 @@
+# ---------------------------------------------------
+# menu.py
+# Version: 1.0.0
+# Last Updated: Sep 20th, 2022
+# ---------------------------------------------------
+
+# ------------ ADJUSTED KNOB DEFAULTS ---------------
+
+# Set shutter offset to "centered"
+nuke.knobDefault('Tracker4.shutteroffset', "centered")
+
+# Set dynamic label on Tracker to display the value of the "transform" and "reference_frame" knobs
+nuke.knobDefault('Tracker4.label', "Motion: [value transform]\nRef Frame: [value reference_frame]")
+
+# Any time a Tracker node is created, set the "reference_frame" knob to the value of the current frame
+nuke.addOnUserCreate(lambda:nuke.thisNode()['reference_frame'].setValue(nuke.frame()), nodeClass='Tracker4')
+
+# Any time a FrameHold node is created, set the "first frame" knob to the value of the current frame
+nuke.addOnUserCreate(lambda:nuke.thisNode()['firstFrame'].setValue(nuke.frame()), nodeClass='FrameHold')
+
+# Set Kronos's Method to "frame"
+nuke.knobDefault('Kronos.interpolation', "Frame")
+
