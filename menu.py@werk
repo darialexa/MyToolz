@@ -1,21 +1,3 @@
-import nuke
-import hotkeys
-import defaults
-
-hotkeys.add_hotkeys()
-defaults.register_defaults()
-
-import cryptomatte_utilities
-cryptomatte_utilities.setup_cryptomatte_ui()
-
-import AnimationMaker
-
-import RetimeCamera
-m = nuke.menu( 'Nodes' )
-m.addCommand('RC','RetimeCamera.create_RCPanel()')
-
-
-
 # ---------------------------------------------------
 # Daria's custom stuff here
 # Version: 1.0.1
