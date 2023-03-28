@@ -1,3 +1,4 @@
+
 import nuke
 import hotkeys
 import defaults
@@ -17,11 +18,14 @@ m.addCommand('RC','RetimeCamera.create_RCPanel()')
 import WrapItUp
 nuke.menu('Nuke').addCommand('Extra/Wrap It Up', "WrapItUp.WrapItUp()")
 
-# ROTO AND PAINT CLIP SET TO NO_CLIP---------------------------
+# Daria's stuff from here-----------------------------------------------
+# Last Updated: Mar27, 2023---------------------------------------------
+
+# Node defaults---------------------------------------------------------
 nuke.knobDefault('Roto.cliptype', "none")
 nuke.knobDefault('RotoPaint.cliptype', "none")
 
-# J_Tracker_Checkboxes v.1.0.0
+# J_Tracker_Checkboxes v.1.0.0------------------------------------------
 # Jazlyn Cartaya, 2019
 
 def tracker_checkboxes_tab():
