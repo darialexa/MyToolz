@@ -1,6 +1,9 @@
+
+import nuke
+
 # ---------------------------------------------------
 # ---------------------------------------------------
-# DARIA'S CUSTOM STUFF!
+# DARIA'S CUSTOM STUFF
 # Last Updated: May 17, 2023
 # ---------------------------------------------------
 # ---------------------------------------------------
@@ -24,10 +27,6 @@ nuke.knobDefault('MotionBlur3D.shutteroffset', "centered")
 nuke.knobDefault('ScanlineRender.shutteroffset', "centered")
 nuke.knobDefault('Card3D.shutteroffset', "centered")
 
-# This one is set up, but changes back to "single frame" once Clone or Paint stroke is created, MF! :(
-# nuke.knobDefault('RotoPaint.lifetime_type', "all frames")
-# nuke.addOnUserCreate(lambda:nuke.thisNode()['lifetime_type'].setValue("all frames"), nodeClass='RotoPaint')
-
 # Set dynamic label on Tracker to display the value of the "transform" and "reference_frame" knobs
 nuke.knobDefault('Tracker4.label', "Motion: [value transform]\nRef Frame: [value reference_frame]")
 
@@ -47,16 +46,7 @@ nuke.knobDefault('Blur.size', "5")
 nuke.knobDefault('Defocus.ratio', "0.5")
 
 
-# CUSTOM MENUS -------------------------------------
-utilitiesMenu = nuke.menu('Nuke').addMenu('Darias')
-utilitiesMenu.addCommand('Autocrop', 'nukescripts.autocrop()')
-
-# V_Multilabeler definitions
-# toolbar = nuke.menu('Nodes')
-# VMenu = toolbar.addMenu('V!ctor', icon='V_Victor.png')
-# VMenu.addCommand('V_Multilabeler', 'nuke.createNode("V_Multilabeler")', icon='V_Multilabeler.png')
-
-# J_Tracker_Checkboxes v.1.0.0------------------------------------------
+# J_Tracker_Checkboxes v.1.0.0
 # Jazlyn Cartaya, 2019
 
 def tracker_checkboxes_tab():
@@ -180,6 +170,4 @@ def tracker_checkboxes():
     except ValueError:
         nuke.message('The value you entered was not a number.'
                      ' Please enter a number value or "All".')
-
-# END OF DARIAS STUFF THANKS FOR WATCHING-----------
 
