@@ -1,37 +1,117 @@
-
 import nuke
+import DeadlineNukeClient
 
-# ---------------------------------------------------
-# ---------------------------------------------------
-# DARIA'S CUSTOM STUFF
-# Last Updated: May 17, 2023
-# ---------------------------------------------------
-# ---------------------------------------------------
 
-# ADJUSTED KNOB DEFAULTS ----------------------------
+# -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+# DARIA'S CUSTOM STUFF HERE
+# HANDS OFF!
+# Last Updated: Jul 18, 2024
+# -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
 
-# ROTO AND PAINT CLIP SET TO NO_CLIP-----------------
-# nuke.knobDefault('Roto.cliptype', "none")
-# nuke.knobDefault('RotoPaint.cliptype', "none")
+# Create Darias menu & assign items----------------------------------------
 
+utilitiesMenu = nuke.menu('Nuke').addMenu('Darias')
+
+utilitiesMenu.addCommand('Autocrop', 'nukescripts.autocrop()')
+
+# NEED TO FIX -
+# utilitiesMenu.addCommand('Tech_Check', lambda: nuke.createNode('Tech_Check'))
+
+
+# ConfDialog_Suppressor.py
+utilitiesMenu.addCommand('ConfDialog_Suppressor', 'suppress_confirmation_dialog()')
+
+def suppress_confirmation_dialog():
+    # Get all nodes in the script
+    all_nodes = nuke.allNodes()
+    
+    # Iterate through all nodes
+    for node in all_nodes:
+        # Check if the node is a Camera node
+        if node.Class() == 'Camera3':
+            # Set the 'suppress dialog' knob to True
+            node['suppress_dialog'].setValue(True)
+
+
+
+# Add label to the existing Lens Distortion Nodes and change the direction to "Distort"
+
+# ADDED TO DARIAS MENU
+utilitiesMenu.addCommand('LensDist Fixer', 'direction()')
+
+def direction():
+    # Get all nodes in the script
+    all_nodes = nuke.allNodes()
+  
+    # Iterate through all nodes
+    for node in all_nodes:
+        # Check if the node is a LD_3DE4 node
+        if node.Class() in ('LD_3DE4_Anamorphic_Standard_Degree_4', 'LD_3DE4_Anamorphic_Rescaled_Degree_4', 'LD_3DE4_Anamorphic_Standard_Degree_6', 'LD_3DE4_Anamorphic_Rescaled_Degree_6', 'LD_3DE4_Radial_Standard_Degree_4', 'LD_3DE4_Radial_Fisheye_Degree_8', 'LD_3DE_Classic_LD_Model'):
+            # Change to "distort"
+            node['direction'].setValue("0")
+            # Add the label
+            node['label'].setValue("[value direction]")
+
+
+
+
+# ADJUSTED KNOB DEFAULTS -------------------------------------------------------------------------------
+
+# REPLACE BACKDROP WITH THE MONOCHROME ONE
+from autoBackdropBW import autoBackdropBW
+toolbar = nuke.menu('Nodes')
+toolbar.addCommand('Other/Backdrop', 'autoBackdropBW()', 'alt+b', icon='Backdrop.png')
+nuke.knobDefault('BackdropNode.note_font_size', "40") 
+
+# Set default Merge metadata to All 
+nuke.knobDefault('Merge2.metainput', "All")
+
+# ROTO AND PAINT CLIP SET TO NO_CLIP
+nuke.knobDefault('Roto.cliptype', "none")
+nuke.knobDefault('Roto.feather_type', "smooth")
+nuke.knobDefault('RotoPaint.cliptype', "none")
+
+# LABEL DOT
 nuke.knobDefault('Dot.label', '[knob name]')
 
-# MOTION BLUR SHUTTER CENTERED ----------------------
-nuke.knobDefault('Tracker4.shutteroffset', "centered")
-nuke.knobDefault('TimeBlur.shutteroffset', "centered")
-nuke.knobDefault('Transform.shutteroffset', "centered")
-nuke.knobDefault('TransformMasked.shutteroffset', "centered")
-nuke.knobDefault('CornerPin2D.shutteroffset', "centered")
-nuke.knobDefault('MotionBlur2D.shutteroffset', "centered")
-nuke.knobDefault('MotionBlur3D.shutteroffset', "centered")
-nuke.knobDefault('ScanlineRender.shutteroffset', "centered")
-nuke.knobDefault('Card3D.shutteroffset', "centered")
+# SET DEFAULT DENOISE AMOUNT TO 3
+nuke.knobDefault('Denoise2.amount', "3")
+
+# MOTION BLUR SHUTTER CENTERED
+nuke.knobDefault('shutteroffset', 'centered')
+
+
+# T'S-REQUESTS-----------now in nuke-user-prefs----------------------------------------------------------
+
+"""
 
 # Set dynamic label on Tracker to display the value of the "transform" and "reference_frame" knobs
 nuke.knobDefault('Tracker4.label', "Motion: [value transform]\nRef Frame: [value reference_frame]")
 
-# Any time a Tracker node is created, set the "reference_frame" knob to the value of the current frame
+# Disable the keyframe display
+nuke.knobDefault('Tracker4.keyframe_display', "3")
+
+# Set dynamic label on Tracker to display the "reference_frame" knob to the value of the current frame
 nuke.addOnUserCreate(lambda:nuke.thisNode()['reference_frame'].setValue(nuke.frame()), nodeClass='Tracker4')
+
+# Shuffle display
+nuke.knobDefault('Shuffle2.label', "[value in1]")
+
+# Lens Distortion labels
+nuke.knobDefault('LD_3DE4_Anamorphic_Standard_Degree_4.label', "[value direction]")
+nuke.knobDefault('LD_3DE4_Anamorphic_Rescaled_Degree_4.label', "[value direction]")
+nuke.knobDefault('LD_3DE4_Anamorphic_Standard_Degree_6.label', "[value direction]")
+nuke.knobDefault('LD_3DE4_Anamorphic_Rescaled_Degree_6.label', "[value direction]")
+nuke.knobDefault('LD_3DE4_Radial_Standard_Degree_4.label', "[value direction]")
+nuke.knobDefault('LD_3DE4_Radial_Fisheye_Degree_8.label', "[value direction]")
+nuke.knobDefault('LD_3DE_Classic_LD_Model.label', "[value direction]")
+# -------------------------------------------------------------------------------------------------------------
+
+"""
+
+
 
 # Any time a FrameHold node is created, set the "first frame" knob to the value of the current frame
 nuke.addOnUserCreate(lambda:nuke.thisNode()['firstFrame'].setValue(nuke.frame()), nodeClass='FrameHold')
@@ -39,15 +119,24 @@ nuke.addOnUserCreate(lambda:nuke.thisNode()['firstFrame'].setValue(nuke.frame())
 # Set Kronos's timing to "frame"
 nuke.knobDefault('Kronos.timing2', "Frame")
 
-# Set Blur to "5"
+# Set default Blur to "5"
 nuke.knobDefault('Blur.size', "5")
 
 # Set Defocus to anamorphic
 nuke.knobDefault('Defocus.ratio', "0.5")
 
 
-# J_Tracker_Checkboxes v.1.0.0
-# Jazlyn Cartaya, 2019
+
+# LIGHTNING EFFECT -----------------------------------------------------------------
+toolbar = nuke.toolbar("Nodes")
+m = toolbar.addMenu("X_Tools", icon="X_Tools.png")
+
+m.addCommand("X_Tesla", "nuke.createNode(\"X_Tesla\")", icon="X_Tesla.png")
+
+
+
+# J_Tracker_Checkboxes v.1.0.0 ------------------------------------------------------
+# Jazlyn Cartaya, 2019 --------------------------------------------------------------
 
 def tracker_checkboxes_tab():
     """This function creates a tab in the Tracker node that
@@ -171,3 +260,13 @@ def tracker_checkboxes():
         nuke.message('The value you entered was not a number.'
                      ' Please enter a number value or "All".')
 
+# -------------------------------------------------------------------------
+# END OF DARIA'S CUSTOM STUFF
+# -------------------------------------------------------------------------
+
+"""
+# now moved to the general menu.py -
+menubar = nuke.menu("Nuke")
+tbmenu = menubar.addMenu("&Thinkbox")
+tbmenu.addCommand("Submit Nuke To Deadline", DeadlineNukeClient.main, "")
+"""
